@@ -3,16 +3,6 @@ package com.slon.p1;
 /**
  * Created by Sergii on 29.01.2017.
  */
-/*
-Please input first number:
-Your input <inputted number> as a first number.
-Please input second number:
-Your input <inputted number> as a second number.
-
-Sum is <sum>
-Difference is <difference>
-Multiplication is <multiplication>
-Division is <division>*/
 
 import java.io.BufferedReader;
 import java.io.IOException;
