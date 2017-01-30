@@ -69,6 +69,7 @@ public class Calculator {
             }
         }
     }
+
     static boolean isStop(){
         BufferedReader br=new BufferedReader(new InputStreamReader(in));
 
