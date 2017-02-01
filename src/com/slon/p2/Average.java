@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  * Created by Sergii on 02.02.2017.
  */
 public class Average {
-    private static double average(double x, double y) {
+    public static double average(double x, double y) {
         return (x + y) / 2;
     }
 
