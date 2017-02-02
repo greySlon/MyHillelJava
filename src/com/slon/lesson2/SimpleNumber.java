@@ -8,33 +8,33 @@ import java.io.InputStreamReader;
  * Created by Sergii on 02.02.2017.
  */
 public class SimpleNumber {
-    public static boolean isSimple(int x) throws Exception{
-        if(x>0){
-            for (int i = 2; i < x; i++) {
-                if(x%i==0){
+    public static boolean isSimple(int x) throws Exception {
+        if (x > 0) {
+            for (int i = 2; i < x / 2; i++) {
+                if (x % i == 0) {
                     return false;
                 }
             }
             return true;
-        }else{
+        } else {
             throw new Exception("Error input- number should be more than 0");
         }
     }
 
-    public static void main(String[]a){
-        BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] a) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         try {
             System.out.print("Enter number to check: ");
-            int x=Integer.parseInt(reader.readLine());
-            if(isSimple(x)){
+            int x = Integer.parseInt(reader.readLine());
+            if (isSimple(x)) {
                 System.out.println(String.format("%d is simple", x));
-            }else{
+            } else {
                 System.out.println(String.format("%d isn't simple", x));
             }
         } catch (IOException e) {
             System.out.println("Something wrong");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }

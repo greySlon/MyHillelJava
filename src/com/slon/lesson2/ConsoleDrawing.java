@@ -12,32 +12,6 @@ public class ConsoleDrawing {
         this.maxY = maxY;
     }
 
-/*    public void drawRectangle() {
-        for (int y = 0; y < maxY; y++) {
-            for (int x = 0; x < maxX; x++) {
-                if (rectangleCondition(y, x)) {
-                    System.out.print("*");
-                } else {
-                    System.out.print(" ");
-                }
-            }
-            System.out.println();
-        }
-    }*/
-/*
-    public void drawChessBoard() {
-        for (int y = 0; y < maxY; y++) {
-            for (int x = 0; x < maxX; x++) {
-
-                if (chessCondition(y, x)) {
-                    System.out.print("*");
-                } else {
-                    System.out.print(" ");
-                }
-            }
-            System.out.println();
-        }
-    }*/
 
     public void draw(Condition condition) {
         for (int y = 0; y < maxY; y++) {
