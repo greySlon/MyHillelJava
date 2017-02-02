@@ -1,4 +1,4 @@
-package com.slon.p2;
+package com.slon.lesson2;
 
 import java.io.BufferedReader;
 import java.io.IOException;

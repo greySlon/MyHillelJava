@@ -1,6 +1,4 @@
-package com.slon.p2;
-
-import java.math.BigDecimal;
+package com.slon.lesson2;
 
 /**
  * Created by Sergii on 02.02.2017.

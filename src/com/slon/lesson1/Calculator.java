@@ -1,4 +1,4 @@
-package com.slon.p1;
+package com.slon.lesson1;
 
 /**
  * Created by Sergii on 29.01.2017.
