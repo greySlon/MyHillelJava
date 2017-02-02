@@ -38,7 +38,7 @@ public class ConsoleDrawing {
         double rate = maxX /(double) maxY;
         double xd =( x / rate - y );
         double yd=(x+y*rate - maxX+1);
-        return RECTANGLE.test(x, y) || (xd>-0.15&&xd<0.15)||(yd>-0.15&&yd<0.15);
+        return RECTANGLE.test(x, y) || (xd>-0.5&&xd<0.5)||(yd>-0.5&&yd<0.5);
     };
 
 
