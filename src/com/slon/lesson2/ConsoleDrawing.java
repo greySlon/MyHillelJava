@@ -26,24 +26,24 @@ public class ConsoleDrawing {
         }
     }
 
-    public  final Condition RECTANGLE=(int x, int y)-> {
+    public final Condition RECTANGLE = (int x, int y) -> {
         return y == 0 || y == maxY - 1 || x == 0 || x == maxX - 1;
     };
 
-    public  final Condition CHESS=(int x, int y)-> {
+    public final Condition CHESS = (int x, int y) -> {
         return x % 2 == 0 ^ y % 2 == 0;
     };
 
-    public  final Condition CROSS=(int x, int y)-> {
-        int dx=0, dy=0;
-        return RECTANGLE.test(x, y)||x==y||x+y==maxX-1;
+    public final Condition CROSS = (int x, int y) -> {
+        double rate = maxX /(double) maxY;
+        double xd =( x / rate - y );
+        double yd=(x+y*rate - maxX+1);
+        return RECTANGLE.test(x, y) || (xd>-0.15&&xd<0.15)||(yd>-0.15&&yd<0.15);
     };
 
 
-
-
     public static void main(String[] a) {
-        ConsoleDrawing cosole = new ConsoleDrawing(8, 7);
+        ConsoleDrawing cosole = new ConsoleDrawing(20, 40);
         cosole.draw(cosole.RECTANGLE);
         System.out.println();
         cosole.draw(cosole.CHESS);
