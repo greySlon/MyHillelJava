@@ -4,11 +4,11 @@ package com.slon.lesson2;
  * Created by Sergii on 02.02.2017.
  */
 public class Deposit {
-    private int deposit = 0;
+    private double deposit = 0;
     private double rate;
     private int period;
 
-    public void setDeposit(int deposit) throws DepositException{
+    public void setDeposit(double deposit) throws DepositException{
         if(deposit>0) {
             this.deposit = deposit;
         }else{
@@ -47,9 +47,9 @@ public class Deposit {
     public static void main(String[]a){
         Deposit deposit=new Deposit();
         try {
-            deposit.setDeposit(1000);
-            deposit.setRate(17);
-            deposit.setPeriod(10);
+            deposit.setDeposit(20_000_000_000_000_000f);
+            deposit.setRate(20);
+            deposit.setPeriod(15);
             deposit.report();
         } catch (BankException e) {
             System.out.println(e.getMessage());
