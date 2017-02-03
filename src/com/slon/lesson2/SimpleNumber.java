@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 public class SimpleNumber {
     public static boolean isSimple(int x) throws Exception {
         if (x > 0) {
-            for (int i = 2; i < x / 2; i++) {
+            for (int i = 2; i <= x / 2+1; i++) {
                 if (x % i == 0) {
                     return false;
                 }
