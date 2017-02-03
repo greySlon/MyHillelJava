@@ -38,12 +38,12 @@ public class ConsoleDrawing {
         double rate = maxX / (double) maxY;
         double xd = (x / rate - y);
         double yd = (x + y * rate - maxX + 1);
-        return RECTANGLE.test(x, y) || (xd > -0.5 && xd < 0.5) || (yd > -0.5 && yd < 0.5);
+        return RECTANGLE.test(x, y) || (xd > -0.5 && xd < 0.8) || (yd > -0.8 && yd < 0.5);
     };
 
 
     public static void main(String[] a) {
-        ConsoleDrawing cosole = new ConsoleDrawing(15, 40);
+        ConsoleDrawing cosole = new ConsoleDrawing(20, 40);
         cosole.draw(cosole.RECTANGLE);
         System.out.println();
         cosole.draw(cosole.CHESS);
