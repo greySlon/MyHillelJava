@@ -24,10 +24,21 @@ public class Group implements Iterable<Student> {
 
     public void addStudent(Student student) throws OverflowGroupException {
         if (studentsCount < students.length) {
-            students[studentsCount++] = student;
+            if (!contains(student)) {
+                students[studentsCount++] = student;
+            }
         } else {
             throw new OverflowGroupException("Group overflow");
         }
+    }
+
+    private boolean contains(Student student) {
+        for (int i = 0; i < studentsCount; i++) {
+            if (students[i] == student) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void removeStudent(Student student) throws StudentNotFoundException {
@@ -87,25 +98,39 @@ public class Group implements Iterable<Student> {
         return false;
     }
 
-    public void union(Group anotherGroup) throws OverflowGroupException{
-        if (this.studentsCount + anotherGroup.studentsCount <= this.students.length){
+    public void union(Group anotherGroup) throws OverflowGroupException {
+        if (this.studentsCount + anotherGroup.studentsCount <= this.students.length) {
             System.arraycopy(anotherGroup, 0, students, studentsCount, anotherGroup.studentsCount);
-        }else{
+        } else {
             throw new OverflowGroupException("Group overflow");
         }
     }
 
-    public void sortByName(){
+    public void sortByName() {
         Arrays.sort(students);
     }
 
-    public void print(){
+    public void print() {
         System.out.println(String.format("Group: %s", groupName));
         System.out.println(String.format("Total count of students: %d", studentsCount));
 
-        int i=1;
+        int i = 1;
         for (Student student : this) {
-            System.out.println(i+". "+student.toString());
+            System.out.println(i + ". " + student.toString());
+        }
+    }
+
+
+    public boolean equals(Group group) {
+        if (studentsCount != group.studentsCount) {
+            return false;
+        } else {
+            for (Student student : group) {
+                if (!contains(student)) {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 
