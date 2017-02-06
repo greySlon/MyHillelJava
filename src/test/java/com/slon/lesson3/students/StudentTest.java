@@ -17,12 +17,12 @@ class StudentTest {
         Person person=new Person("Sergii");
         student=new Student(person, group);
         Course course= new Course("Java Elementary", 2);
-//        listener=new Listener(student,course);
+        listener=new Listener(student,course);
     }
 
     @Test
     void addListener() {
-        student.addListener(listener);
+        student.removeListener(listener);
 
     }
 

@@ -17,7 +17,10 @@ public class Listener {
     private int markCount = 0;
     private int attendance;
 
-    private Listener(Student student, Course course) throws OverflowCourseException{
+    public Listener(Student student, Course course) throws OverflowCourseException {
+        if (student == null || course == null) {
+            throw new NullPointerException("student or course cannot be null");
+        }
         this.student = student;
         this.course = course;
         course.addListener(this);
@@ -41,11 +44,16 @@ public class Listener {
         return attendance;
     }
 
-    public void breakCourse(){
+    public void breakCourse() {
         course.removeListener(this);
     }
 
-    public void deleteStudent(){
+    public void deleteStudent() {
         student.removeListener(this);
+    }
+
+    public void killListener() {
+        breakCourse();
+        deleteStudent();
     }
 }

@@ -29,17 +29,11 @@ public class Course implements Iterable<Listener> {
     }
 
     public boolean removeListener(Listener listener){
-        int pos;
-        boolean listenerFound = false;
-        for (pos = 0; pos < listeners.length; pos++) {
-            if (listeners[pos] == listener) {
-                listenerFound = true;
-                break;
-            }
-        }
-        if (listenerFound) {
+        int pos=indexOf(listener);
+        if (pos!=-1) {
+            listeners[pos].deleteStudent();
             if (pos != listeners.length - 1) {
-                System.arraycopy(listeners, pos + 1, listeners, pos, listenerCount - 1 - pos);
+                System.arraycopy(listeners, pos + 1, listeners, pos, listeners.length - 1 - pos);
             } else {
                 listeners[pos] = null;
             }
@@ -77,5 +71,15 @@ public class Course implements Iterable<Listener> {
         for (int i = 0; i < listeners.length; i++) {
             listeners[i]=null;
         }
+    }
+
+    private int indexOf(Listener listener){
+        int pos;
+        for (pos = 0; pos < listeners.length; pos++) {
+            if (listeners[pos] == listener) {
+                return  pos;
+            }
+        }
+        return -1;
     }
 }

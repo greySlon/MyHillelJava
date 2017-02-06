@@ -35,8 +35,9 @@ public class Group implements Iterable<Student> {
     public boolean removeStudent(Student student) {
         int pos=indexOf(student);
         if (pos!=-1) {
+            students[pos].outOfGroup();
             if (pos != studentsCount - 1) {
-                System.arraycopy(students, pos + 1, students, pos, studentsCount - 1 - pos);
+                System.arraycopy(students, pos + 1, students, pos, students.length - 1 - pos);
             } else {
                 students[pos] = null;
             }

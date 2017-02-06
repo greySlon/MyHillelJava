@@ -31,17 +31,11 @@ public class Student implements Comparable<Student> {
     }
 
     public boolean removeListener(Listener listener) {
-        int pos;
-        boolean listenerFound = false;
-        for (pos = 0; pos < listeners.length; pos++) {
-            if (listeners[pos] == listener) {
-                listenerFound = true;
-                break;
-            }
-        }
-        if (listenerFound) {
+        int pos=indexOf(listener);
+        if (pos!=-1) {
+            listeners[pos].breakCourse();
             if (pos != listenerCount - 1) {
-                System.arraycopy(listeners, pos + 1, listeners, pos, listenerCount - 1 - pos);
+                System.arraycopy(listeners, pos + 1, listeners, pos, listeners.length - 1 - pos);
             } else {
                 listeners[pos] = null;
             }
@@ -50,6 +44,16 @@ public class Student implements Comparable<Student> {
         } else {
             return false;
         }
+    }
+
+    private int indexOf(Listener listener){
+        int pos;
+        for (pos = 0; pos < listeners.length; pos++) {
+            if (listeners[pos] == listener) {
+                return pos;
+            }
+        }
+        return pos;
     }
 
     public void killStudent() {
