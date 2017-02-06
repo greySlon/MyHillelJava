@@ -1,7 +1,6 @@
 package com.slon.lesson3.students;
 
 import com.slon.lesson3.students.exceptions.OverflowGroupException;
-import com.slon.lesson3.students.exceptions.StudentNotFoundException;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -10,45 +9,45 @@ import java.util.Iterator;
  * Created by Sergii on 03.02.2017.
  */
 public class Group implements Iterable<Student> {
-    public final String groupName;
+    public final String GROUP_NAME;
 
     private int studentsCount;
     private Student[] students;
     private int iteratorPos;
 
     public Group(String groupName, int maxStudent) {
-        this.groupName = groupName;
+        this.GROUP_NAME = groupName;
         students = new Student[maxStudent];
     }
 
 
-    public void addStudent(Student student) throws OverflowGroupException {
+    public boolean addStudent(Student student) throws OverflowGroupException {
         if (studentsCount < students.length) {
             if (!contains(student)) {
                 students[studentsCount++] = student;
+                return true;
             }
+            return false;
         } else {
             throw new OverflowGroupException("Group overflow");
         }
     }
 
     public boolean removeStudent(Student student) {
-        int pos=indexOf(student);
-        if (pos!=-1) {
-            students[pos].outOfGroup();
-            if (pos != studentsCount - 1) {
-                System.arraycopy(students, pos + 1, students, pos, students.length - 1 - pos);
-            } else {
-                students[pos] = null;
+        int pos = indexOf(student);
+        if (pos != -1) {
+            int numMoved = students.length - 1 - pos;
+            if (numMoved > 0) {
+                System.arraycopy(students, pos + 1, students, pos, numMoved);
             }
-            studentsCount--;
+            students[--studentsCount] = null;
             return true;
         } else {
             return false;
         }
     }
 
-    private int indexOf(Student student){
+    private int indexOf(Student student) {
         int pos;
         for (pos = 0; pos < students.length; pos++) {
             if (students[pos] == student) {
@@ -60,13 +59,12 @@ public class Group implements Iterable<Student> {
 
     public void clear() {
         for (int i = 0; i < studentsCount; i++) {
-            students[i].outOfGroup();
             students[i] = null;
         }
     }
 
     public boolean killStudentByName(String name) {
-        Student student=findStudentByName(name);
+        Student student = findStudentByName(name);
         if (student != null) {
             return removeStudent(student);
         } else {
@@ -96,7 +94,7 @@ public class Group implements Iterable<Student> {
     }
 
     public void print() {
-        System.out.println(String.format("Group: %s", groupName));
+        System.out.println(String.format("Group: %s", GROUP_NAME));
         System.out.println(String.format("Total count of students: %d", studentsCount));
 
         int i = 1;
@@ -135,6 +133,9 @@ public class Group implements Iterable<Student> {
     }
 
     private boolean contains(Student student) {
+        if(studentsCount==0) {
+            return false;
+        }
         for (int i = 0; i < studentsCount; i++) {
             if (students[i] == student) {
                 return true;
@@ -143,7 +144,7 @@ public class Group implements Iterable<Student> {
         return false;
     }
 
-    private Student findStudentByName(String name){
+    private Student findStudentByName(String name) {
         Student student = null;
         for (int i = 0; i < studentsCount; i++) {
             if (name.equals(students[i].person.name)) {

@@ -1,3 +1,4 @@
+
 package com.slon.lesson3.students;
 
 import com.slon.lesson3.students.exceptions.OverflowCourseException;
@@ -8,36 +9,36 @@ import java.util.Iterator;
 /**
  * Created by Sergii on 03.02.2017.
  */
-public class Course implements Iterable<Listener> {
-    public final String courseName;
 
-    private int listenerCount;
-    private Listener[] listeners;
+public class Course implements Iterable<Student> {
+    public final String COURSE_NAME;
+
+    private int studentCount;
+    private Student[] students;
     private int iteratorPos;
 
     public Course(String courseName, int maxListners) {
-        listeners = new Listener[maxListners];
-        this.courseName = courseName;
+        students = new Student[maxListners];
+        this.COURSE_NAME = courseName;
     }
 
-    public void addListener(Listener listener) throws OverflowCourseException {
-        if (listenerCount < listeners.length) {
-            listeners[listenerCount++] = listener;
+    public void addStudent(Student student) throws OverflowCourseException {
+        if (studentCount < students.length) {
+            students[studentCount++] = student;
         } else {
             throw new OverflowCourseException("Cousre overflow");
         }
     }
 
-    public boolean removeListener(Listener listener){
-        int pos=indexOf(listener);
-        if (pos!=-1) {
-            listeners[pos].deleteStudent();
-            if (pos != listeners.length - 1) {
-                System.arraycopy(listeners, pos + 1, listeners, pos, listeners.length - 1 - pos);
-            } else {
-                listeners[pos] = null;
+    public boolean removeStudent(Student student) {
+        int pos = indexOf(student);
+        if (pos != -1) {
+            students[pos].finishCourse(this);
+            int numMoved = students.length - 1 - pos;
+            if (numMoved > 0) {
+                System.arraycopy(students, pos + 1, students, pos, numMoved);
             }
-            listenerCount--;
+            students[--studentCount] = null;
             return true;
         } else {
             return false;
@@ -45,39 +46,39 @@ public class Course implements Iterable<Listener> {
     }
 
     public void terminate() {
-        for (int i = 0; i < listenerCount; i++) {
-            listeners[i].deleteStudent();
+        for (int i = 0; i < studentCount; i++) {
+            students[i].finishCourse(this);
         }
         clear();
     }
 
     @Override
-    public Iterator<Listener> iterator() {
+    public Iterator<Student> iterator() {
         iteratorPos = 0;
-        return new Iterator<Listener>() {
+        return new Iterator<Student>() {
             @Override
             public boolean hasNext() {
-                return iteratorPos < listenerCount;
+                return iteratorPos < studentCount;
             }
 
             @Override
-            public Listener next() {
-                return listeners[iteratorPos++];
+            public Student next() {
+                return students[iteratorPos++];
             }
         };
     }
 
-    private void clear(){
-        for (int i = 0; i < listeners.length; i++) {
-            listeners[i]=null;
+    private void clear() {
+        for (int i = 0; i < students.length; i++) {
+            students[i] = null;
         }
     }
 
-    private int indexOf(Listener listener){
+    private int indexOf(Student student) {
         int pos;
-        for (pos = 0; pos < listeners.length; pos++) {
-            if (listeners[pos] == listener) {
-                return  pos;
+        for (pos = 0; pos < students.length; pos++) {
+            if (students[pos] == student) {
+                return pos;
             }
         }
         return -1;

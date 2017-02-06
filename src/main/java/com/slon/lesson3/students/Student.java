@@ -1,8 +1,9 @@
 package com.slon.lesson3.students;
 
+import com.slon.lesson3.students.exceptions.OverflowCourseException;
 import com.slon.lesson3.students.exceptions.OverflowGroupException;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Created by Sergii on 03.02.2017.
@@ -11,73 +12,46 @@ public class Student implements Comparable<Student> {
     public final Person person;
 
     private Group group;
-    private int listenerCount = 0;
-    private Listener[] listeners = new Listener[10];
+    private List<Mark> markList = new ArrayList<>();
+    private Map<String, Integer> attendance = new HashMap<>();
+    private List<Course> courseList = new ArrayList<>();
 
-    public Student(Person person, Group group) throws OverflowGroupException {
+    public Student(Person person)  {
         this.person = person;
         this.group = group;
-        group.addStudent(this);
     }
 
 
-    public void addListener(Listener listener) {
-        if (listenerCount < listeners.length) {
-            listeners[listenerCount++] = listener;
-        } else {
-            listeners = Arrays.copyOf(listeners, listeners.length * 3 / 2);
-            listeners[listenerCount++] = listener;
+    public void setGroup(Group group){
+        this.group=group;
+    }
+
+    public void finishCourse(Course course) {
+        courseList.remove(course);
+    }
+
+    public void startCourse(Course course) {
+        courseList.add(course);
+    }
+
+    public void attend(Course course) {
+        if (attendance.containsKey(course.COURSE_NAME)) {
+            int value = attendance.get(course.COURSE_NAME);
+            attendance.put(course.COURSE_NAME, value+1);
+        }else{
+            attendance.put(course.COURSE_NAME, 1);
         }
     }
 
-    public boolean removeListener(Listener listener) {
-        int pos=indexOf(listener);
-        if (pos!=-1) {
-            listeners[pos].breakCourse();
-            if (pos != listenerCount - 1) {
-                System.arraycopy(listeners, pos + 1, listeners, pos, listeners.length - 1 - pos);
-            } else {
-                listeners[pos] = null;
-            }
-            listenerCount--;
-            return true;
-        } else {
-            return false;
-        }
+    public void addMark(Mark mark){
+        markList.add(mark);
     }
 
-    private int indexOf(Listener listener){
-        int pos;
-        for (pos = 0; pos < listeners.length; pos++) {
-            if (listeners[pos] == listener) {
-                return pos;
-            }
-        }
-        return pos;
+    public Iterator<Mark> getMarkIterator(){
+        return markList.iterator();
     }
 
-    public void killStudent() {
-        for (int i = 0; i < listenerCount; i++) {
-            listeners[i].breakCourse();
-        }
-        clear();
-        breakUpGroup();
-    }
-
-    private void clear() {
-        for (int i = 0; i < listeners.length; i++) {
-            listeners[i] = null;
-        }
-    }
-
-    private void breakUpGroup() {
-        group.removeStudent(this);
-        outOfGroup();
-    }
-
-    public void outOfGroup(){
-        group=null;
-    }
+    public Iterator<Course> getCourseIterator(){return courseList.iterator();}
 
     @Override
     public int compareTo(Student o) {
@@ -86,6 +60,6 @@ public class Student implements Comparable<Student> {
 
     @Override
     public String toString() {
-        return String.format("%s (attends %d cources)", person.name, listenerCount);
+        return String.format("%s (attends %d cources)", person.name, courseList.size());
     }
 }
