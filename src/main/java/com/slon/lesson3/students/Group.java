@@ -74,7 +74,7 @@ public class Group implements Iterable<Student> {
 
     public boolean contains(String name) {
         for (int i = 0; i < studentsCount; i++) {
-            if (name.equals(students[i].person.name)) {
+            if (name.equals(students[i].person.getName())) {
                 return true;
             }
         }
@@ -147,7 +147,7 @@ public class Group implements Iterable<Student> {
     private Student findStudentByName(String name) {
         Student student = null;
         for (int i = 0; i < studentsCount; i++) {
-            if (name.equals(students[i].person.name)) {
+            if (name.equals(students[i].person.getName())) {
                 student = students[i];
                 break;
             }

