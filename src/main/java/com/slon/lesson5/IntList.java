@@ -1,9 +1,6 @@
 package com.slon.lesson5;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Created by Sergii on 16.02.2017.
@@ -56,7 +53,7 @@ public class IntList {
 
     public boolean containsAll(int[] coll) {
         for (int i = 0; i < coll.length; i++) {
-            if(!this.contains(coll[i])){
+            if (!this.contains(coll[i])) {
                 return false;
             }
         }
@@ -134,12 +131,21 @@ public class IntList {
         return subArray;
     }
 
+    public void qsort() {
+        qsort(0, size - 1);
+    }
+
     private boolean isOutOfBoundIndex(int index) {
         if (index >= 0 || index < size) {
             return false;
         } else {
             return true;
         }
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(arr);
     }
 
     private void grow() {
@@ -150,8 +156,42 @@ public class IntList {
         arr = grownArray;
     }
 
+    void qsort(int b, int e) {
+        int l = b, r = e;
+        int piv = arr[(l + r) / 2]; // Опорным элементом для примера возьмём средний
+        do {
+            while (arr[l] < piv) {
+                l++;
+            }
+            while (arr[r] > piv) {
+                r--;
+            }
+            if (l <= r)
+                swap(l++, r--);
+        } while (l <= r);
+        if (b < r)
+            qsort(b, r);
+        if (e > l)
+            qsort(l, e);
+    }
 
-    public static void main(String[]a){
+    private void swap(int x, int y) {
+        int tmp = arr[x];
+        arr[x] = arr[y];
+        arr[y] = tmp;
 
+    }
+
+
+    public static void main(String[] a) {
+        IntList list = new IntList(3);
+        list.add(4);
+        list.add(45);
+        list.add(1);
+        list.add(-4);
+        list.add(54);
+        list.add(16);
+        list.qsort();
+        System.out.println(list);
     }
 }
