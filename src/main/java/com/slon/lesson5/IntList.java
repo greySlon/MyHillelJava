@@ -1,6 +1,7 @@
 package com.slon.lesson5;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Sergii on 16.02.2017.
@@ -18,6 +19,13 @@ public class IntList {
         this.arr = new int[defaultSize];
     }
 
+
+    public void randomFill(int count) {
+        Random rand = new Random(4);
+        for (int i = 0; i < count; i++) {
+            this.add(rand.nextInt());
+        }
+    }
 
     public int size() {
         return size;
@@ -72,6 +80,7 @@ public class IntList {
 
     public void clear() {
         arr = new int[defaultSize];
+        size = 0;
     }
 
     public int get(int index) {
@@ -135,19 +144,23 @@ public class IntList {
         qsort(0, size - 1);
     }
 
-    private boolean isOutOfBoundIndex(int index) {
-        if (index >= 0 || index < size) {
-            return false;
-        } else {
-            return true;
+    public void bubleSort() {
+        int tmpSize = size;
+
+        while (tmpSize > 1) {
+            for (int i = 1; i < tmpSize; i++) {
+                if (arr[i - 1] > arr[i]) {
+                    swap(i - 1, i);
+                }
+            }
+            tmpSize--;
         }
     }
-
 
     public boolean equalsTo(int[] coll) {
         if (coll.length != size) return false;
         for (int i = 0; i < size; i++) {
-            if(arr[i]!=coll[i]){
+            if (arr[i] != coll[i]) {
                 return false;
             }
         }
@@ -167,7 +180,7 @@ public class IntList {
         arr = grownArray;
     }
 
-    void qsort(int b, int e) {
+    private void qsort(int b, int e) {
         int l = b, r = e;
         int piv = arr[(l + r) / 2]; // Опорным элементом для примера возьмём средний
         do {
@@ -193,17 +206,37 @@ public class IntList {
 
     }
 
+    private boolean isOutOfBoundIndex(int index) {
+        if (index >= 0 || index < size) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void profile(VoidFunction func, TimeUnit timeUnit) {
+        long start = System.nanoTime();
+        func.run();
+        long stop = System.nanoTime() - start;
+        System.out.println(timeUnit.convert(stop, TimeUnit.NANOSECONDS));
+    }
 
     public static void main(String[] a) {
-        IntList list = new IntList(3);
-        list.add(4);
-        list.add(45);
-        list.add(1);
-        list.add(-4);
-        list.add(54);
-        list.add(16);
-        list.addAll(new int[]{5, 8, -6});
-        list.qsort();
-        System.out.println(list);
+        IntList list = new IntList();
+
+        list.randomFill(50_000);
+        System.out.println("BULB");
+        list.profile(() -> list.bubleSort(), TimeUnit.MILLISECONDS);
+
+        list.clear();
+
+        list.randomFill(50_000);
+        System.out.println("Q-sort");
+        list.profile(() -> list.qsort(), TimeUnit.MILLISECONDS);
+//        System.out.println(list);
     }
+}
+
+interface VoidFunction {
+    void run();
 }
