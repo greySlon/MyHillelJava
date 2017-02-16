@@ -191,6 +191,7 @@ public class IntList {
         list.add(-4);
         list.add(54);
         list.add(16);
+        list.addAll(new int[]{5, 8, -6});
         list.qsort();
         System.out.println(list);
     }
