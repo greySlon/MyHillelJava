@@ -143,6 +143,17 @@ public class IntList {
         }
     }
 
+
+    public boolean equalsTo(int[] coll) {
+        if (coll.length != size) return false;
+        for (int i = 0; i < size; i++) {
+            if(arr[i]!=coll[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
         return Arrays.toString(arr);
