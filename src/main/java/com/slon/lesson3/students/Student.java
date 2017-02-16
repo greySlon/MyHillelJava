@@ -30,6 +30,10 @@ public class Student implements Comparable<Student> {
         this.group = group;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
     public void finishCourse(Course course) {
         courseList.remove(course);
     }
@@ -49,6 +53,10 @@ public class Student implements Comparable<Student> {
 
     public void addMark(Mark mark) {
         markList.add(mark);
+    }
+
+    public List<Mark> getMarkList(){
+        return Collections.unmodifiableList(markList);
     }
 
     public Iterator<Mark> getMarkIterator() {

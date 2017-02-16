@@ -3,6 +3,7 @@ package com.slon.lesson3.students;
 import com.slon.lesson3.students.exceptions.OverflowGroupException;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -45,6 +46,10 @@ public class Group implements Iterable<Student> {
         } else {
             return false;
         }
+    }
+
+    public Student[] getStudents() {
+        return Arrays.copyOfRange(students, 0, studentsCount);
     }
 
     private int indexOf(Student student) {
