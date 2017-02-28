@@ -393,7 +393,7 @@ public class MyList implements List {
 
     @Override
     public ListIterator listIterator() {
-        throw new UnsupportedOperationException();
+        return new MyListIterator();
     }
 
     @Override
