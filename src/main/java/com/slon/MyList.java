@@ -63,49 +63,92 @@ public class MyList implements List {
         return false;
     }
 
+    private class MyListIterator implements ListIterator {
+        Node currentNode = head;
+        Node previousNode = null;
+        int count = 0;
+
+        @Override
+        public boolean hasNext() {
+            return count < size;
+        }
+
+        @Override
+        public Object next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            previousNode = currentNode;
+            currentNode = previousNode.next;
+            count++;
+            return previousNode.data;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return count < size;
+        }
+
+        @Override
+        public Object previous() {
+            if (!hasPrevious()) {
+                throw new NoSuchElementException();
+            }
+            previousNode = currentNode;
+            currentNode = previousNode.prev;
+            count++;
+            return previousNode.data;
+        }
+
+        @Override
+        public int nextIndex() {
+            return count;
+        }
+
+        @Override
+        public int previousIndex() {
+            return count - 1;
+        }
+
+        @Override
+        public void remove() {
+            Node prev = previousNode.prev;
+            Node next = previousNode.next;
+            if (prev == null) {
+                head = next;
+            } else {
+                prev.next = next;
+            }
+            if (next == null) {
+                tail = prev;
+            } else {
+                next.prev = prev;
+            }
+            previousNode.next = previousNode.prev = null;
+            previousNode.data = null;
+            count--;
+            size--;
+        }
+
+        @Override
+        public void set(Object o) {
+            previousNode.data = o;
+        }
+
+        @Override
+        public void add(Object o) {
+            if (MyList.this.size() == 0) {
+                MyList.this.add(o);
+            } else {
+                int index = count == 0 ? 0 : count - 1;
+                MyList.this.add(index, 0);
+            }
+        }
+    }
+
     @Override
     public Iterator iterator() {
-        return new Iterator() {
-            Node currentNode = head;
-            Node previousNode = null;
-            int count = 0;
-
-            @Override
-            public boolean hasNext() {
-                return count < size;
-            }
-
-            @Override
-            public Object next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                previousNode = currentNode;
-                currentNode = previousNode.next;
-                count++;
-                return previousNode.data;
-            }
-
-            @Override
-            public void remove() {
-                Node prev = previousNode.prev;
-                Node next = previousNode.next;
-                if (prev == null) {
-                    head = next;
-                } else {
-                    prev.next = next;
-                }
-                if (next == null) {
-                    tail = prev;
-                } else {
-                    next.prev = prev;
-                }
-                previousNode.next = previousNode.prev = null;
-                previousNode.data = null;
-                count--;
-                size--;
-            }
-        };
+        return new MyListIterator();
     }
 
     @Override
