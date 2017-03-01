@@ -54,7 +54,7 @@ public class MyList implements List {
                 }
             } else {
                 for (Node tmp = head; tmp != null; tmp = tmp.next) {
-                    if (tmp.data.equals(o)) {
+                    if (o.equals(tmp.data)) {
                         return true;
                     }
                 }
@@ -96,7 +96,7 @@ public class MyList implements List {
             }
             previousNode = currentNode;
             currentNode = previousNode.prev;
-            count++;
+            count--;
             return previousNode.data;
         }
 
@@ -173,10 +173,19 @@ public class MyList implements List {
             return false;
         } else {
             Iterator<Object> iter = this.iterator();
-            while (iter.hasNext()) {
-                if (iter.next().equals(o)) {
-                    iter.remove();
-                    return true;
+            if (o != null) {
+                while (iter.hasNext()) {
+                    if (o.equals(iter.next())) {
+                        iter.remove();
+                        return true;
+                    }
+                }
+            } else {
+                while (iter.hasNext()) {
+                    if (o == iter.next()) {
+                        iter.remove();
+                        return true;
+                    }
                 }
             }
             return false;
@@ -190,7 +199,6 @@ public class MyList implements List {
         }
         for (Object o : c) {
             this.add(o);
-            size++;
         }
         return true;
     }
@@ -200,17 +208,21 @@ public class MyList implements List {
         if (checkOutBound(index) || c.size() == 0) {
             return false;
         }
-        if ((size << 1) > index) {
-            Node tmpNode = head;
-            for (int i = 0; i <= index; i++) tmpNode = tmpNode.next;
+        Node tmpNode;
+        if ((size >> 1) > index) {
+            tmpNode = head;
+            for (int i = 0; i < index; i++) tmpNode = tmpNode.next;
+        } else {
+            tmpNode = tail;
+            for (int i = size - 1; i > index; i--) tmpNode = tmpNode.prev;
+        }
 
-            Node node;
-            for (Object o : c) {
-                node = new Node(o, tmpNode.prev, tmpNode);
-                tmpNode.prev.next = node;
-                tmpNode.prev = node;
-                size++;
-            }
+        Node node;
+        for (Object o : c) {
+            node = new Node(o, tmpNode.prev, tmpNode);
+            tmpNode.prev.next = node;
+            tmpNode.prev = node;
+            size++;
         }
         return true;
     }
@@ -218,6 +230,7 @@ public class MyList implements List {
     @Override
     public void clear() {
         head = tail = null;
+        size = 0;
     }
 
     @Override
@@ -295,7 +308,7 @@ public class MyList implements List {
                 }
             }
         }
-        return i;
+        return -1;
     }
 
     @Override
@@ -324,6 +337,7 @@ public class MyList implements List {
         MyList list = new MyList();
         list.head = getNode(fromIndex);
         list.tail = getNode(toIndex);
+        list.size = toIndex - fromIndex + 1;
         return list;
     }
 
@@ -368,12 +382,12 @@ public class MyList implements List {
         if (a.length < size) {
             return this.toArray();
         } else {
-            int i = 0;
-            Object[] array = new Object[size];
-            for (Node node = head; node != null; node = node.next) {
-                array[i++] = node.data;
+            int i=0;
+            for (Object item : this) {
+                a[i]=item;
+                i++;
             }
-            return array;
+            return a;
         }
     }
 
@@ -406,4 +420,23 @@ public class MyList implements List {
         throw new UnsupportedOperationException();
     }
 
+
+    public static void main(String[] a) {
+        MyList list = new MyList();
+        list.add("qw");
+        list.add("qh");
+        list.add("qu");
+        list.add("qt");
+        list.add("qr");
+        Iterator iter = list.listIterator();
+        iter.next();
+        iter.remove();
+        for (Object item : list) {
+            System.out.println(item);
+        }
+        System.out.println("********");
+        for (int i = list.size() - 1; i >= 0; i--) {
+            System.out.println(list.get(i));
+        }
+    }
 }
