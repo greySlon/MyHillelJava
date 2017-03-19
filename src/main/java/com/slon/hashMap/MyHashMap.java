@@ -9,6 +9,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
     private int size = 0;
     private int bucketCount;
     private List<Bucket> buckets;
+    private boolean toReorganize = false;
 
     public MyHashMap() {
         this(16);
@@ -51,6 +52,10 @@ public class MyHashMap<K, V> implements Map<K, V> {
     private class Bucket implements Iterable<Node<K, V>> {
         List<Node<K, V>> list = new ArrayList<>();
 
+        public void add(Node<K, V> node) {
+            list.add(node);
+        }
+
         public V add(K key, V value) {
             for (Node<K, V> item : list) {
                 if (item.key.equals(key)) {
@@ -60,6 +65,8 @@ public class MyHashMap<K, V> implements Map<K, V> {
                 }
             }
             list.add(new Node(key, value, key.hashCode()));
+            if (list.size() > 10)
+                toReorganize = true;
             size++;
             return value;
         }
@@ -131,6 +138,26 @@ public class MyHashMap<K, V> implements Map<K, V> {
         }
     }
 
+    //toReorganize
+    private void reorganize() {
+        List<Bucket> newBuckets;
+        int newBucketCount;
+        if (bucketCount < Integer.MAX_VALUE / 2) {
+            newBucketCount = bucketCount * 2;
+            newBuckets = new ArrayList<>(newBucketCount);
+            for (int i = 0; i < newBucketCount; i++) {
+                newBuckets.add(new Bucket());
+            }
+            for (Bucket bucket : buckets) {
+                for (Node<K, V> node : bucket) {
+                    newBuckets.get(node.hash % newBucketCount).add(node);
+                }
+            }
+            this.bucketCount = newBucketCount;
+            this.buckets = newBuckets;
+        }
+    }
+
     // Query Operations
     @Override
     public int size() {
@@ -168,7 +195,12 @@ public class MyHashMap<K, V> implements Map<K, V> {
     // Modification Operations
     @Override
     public V put(K key, V value) {
-        return buckets.get(key.hashCode() % bucketCount).add(key, value);
+        V val = buckets.get(key.hashCode() % bucketCount).add(key, value);
+        if (toReorganize) {
+            reorganize();
+            toReorganize = false;
+        }
+        return val;
     }
 
     @Override
@@ -299,7 +331,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
         map.put("two", 2);
         map.put("three", 3);
         map.put("four", 4);
-        System.out.println(String.format("size=%d",map.size()));
+        System.out.println(String.format("size=%d", map.size()));
         System.out.println(map.get("one"));
         System.out.println(map.containsKey("six"));
         System.out.println(map.containsKey("four"));
@@ -308,16 +340,16 @@ public class MyHashMap<K, V> implements Map<K, V> {
         System.out.println(map.containsValue(46));
         System.out.println(map.containsValue(4));
         map.remove("two");
-        System.out.println(String.format("size=%d",map.size()));
+        System.out.println(String.format("size=%d", map.size()));
         for (Entry<String, Integer> entry : map.entrySet()) {
-            System.out.println(String.format("%s - %d", entry.getKey(),entry.getValue()));
+            System.out.println(String.format("%s - %d", entry.getKey(), entry.getValue()));
         }
 
         System.out.println("Copy to another map");
-        MyHashMap<String,Integer> map2=new MyHashMap<>();
+        MyHashMap<String, Integer> map2 = new MyHashMap<>();
         map2.putAll(map);
         for (Entry<String, Integer> entry : map2.entrySet()) {
-            System.out.println(String.format("%s - %d", entry.getKey(),entry.getValue()));
+            System.out.println(String.format("%s - %d", entry.getKey(), entry.getValue()));
         }
     }
 }
