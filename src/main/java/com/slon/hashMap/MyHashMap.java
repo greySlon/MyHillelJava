@@ -150,7 +150,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
             }
             for (Bucket bucket : buckets) {
                 for (Node<K, V> node : bucket) {
-                    newBuckets.get(node.hash % newBucketCount).add(node);
+                    newBuckets.get(Math.abs(node.hash) % newBucketCount).add(node);
                 }
             }
             this.bucketCount = newBucketCount;
@@ -195,7 +195,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
     // Modification Operations
     @Override
     public V put(K key, V value) {
-        V val = buckets.get(key.hashCode() % bucketCount).add(key, value);
+        V val = buckets.get(Math.abs(key.hashCode()) % bucketCount).add(key, value);
         if (toReorganize) {
             reorganize();
             toReorganize = false;
