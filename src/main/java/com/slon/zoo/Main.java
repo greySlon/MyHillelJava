@@ -1,6 +1,8 @@
-package com.slon.zoo.utils;
+package com.slon.zoo;
 
 import com.slon.zoo.models.Animal;
+import com.slon.zoo.utils.AnimalGenerator;
+import com.slon.zoo.utils.Stuff;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,7 +15,11 @@ public class FoodManager {
     }
 
     Listener<WannaEatEvent> eatEventListener = (Object sender, WannaEatEvent eventArg) ->
-            System.out.println("FoodManager #" + id + " receive message from animal: " + eventArg.toString());
+            System.out.println(
+                    "FoodManager #" + id + " receive message from "
+                            + sender.getClass().toString().replaceAll(".+\\.", "")
+                            + ": " + eventArg.toString()
+            );
 
     public Listener<WannaEatEvent> getEatEventListener() {
         return eatEventListener;

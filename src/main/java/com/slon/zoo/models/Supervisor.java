@@ -9,9 +9,21 @@ import com.slon.zoo.events.WannaEatEvent;
  * Created by Sergii on 27.03.2017.
  */
 public class Supervisor {
-    Listener<WannaEatEvent> eatEventListener = (Object sender, WannaEatEvent eventArg) -> System.out.println("Supervisor receive message from animal: " + eventArg.toString());
-    Listener<DiseaseEvent> diseaseEventListener = (Object sender, DiseaseEvent eventArg) -> System.out.println("Supervisor receive message from animal: " + eventArg.toString());
-    Listener<FurCareEvent> furCareEventListener = (Object sender, FurCareEvent eventArg) -> System.out.println("Supervisor receive message from animal: " + eventArg.toString());
+    Listener<WannaEatEvent> eatEventListener = (Object sender, WannaEatEvent eventArg) -> System.out.println(
+            "Supervisor receive message from "
+                    + sender.getClass().toString().replaceAll(".+\\.", "")
+                    + ": " + eventArg.toString()
+    );
+    Listener<DiseaseEvent> diseaseEventListener = (Object sender, DiseaseEvent eventArg) -> System.out.println("" +
+            "Supervisor receive message from "
+            + sender.getClass().toString().replaceAll(".+\\.", "")
+            + ": " + eventArg.toString()
+    );
+    Listener<FurCareEvent> furCareEventListener = (Object sender, FurCareEvent eventArg) -> System.out.println(
+            "Supervisor receive message from "
+                    + sender.getClass().toString().replaceAll(".+\\.", "")
+                    + ": " + eventArg.toString()
+    );
 
     public Listener<FurCareEvent> getFurCareEventListener() {
         return furCareEventListener;
