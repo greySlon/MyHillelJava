@@ -8,10 +8,11 @@
     <artifactId>MyHillelJava</artifactId>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>RELEASE</version>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.0.0-M3</version>
         </dependency>
     </dependencies>
 

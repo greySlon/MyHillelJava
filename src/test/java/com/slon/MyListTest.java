@@ -6,7 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
+
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -17,11 +19,28 @@ import static org.junit.jupiter.api.Assertions.*;
  * Created by Sergii on 28.02.2017.
  */
 class MyListTest {
+
     MyList list;
 
     @BeforeEach
     void setUp() {
         list = new MyList();
+    }
+
+    @Test
+    void iterator() {
+        list.addAll(Arrays.asList("qw", null, 4, 8));
+        Iterator iter = list.iterator();
+        assertTrue(iter.hasNext());
+        assertEquals("qw", iter.next());
+        assertTrue(iter.hasNext());
+        assertEquals(null, iter.next());
+        assertTrue(iter.hasNext());
+        assertEquals(4, iter.next());
+        assertTrue(iter.hasNext());
+        assertEquals(8, iter.next());
+        assertFalse(iter.hasNext());
+
     }
 
     @Test
@@ -48,7 +67,7 @@ class MyListTest {
 
     @Test
     void contains() {
-        assertThrows(NoSuchElementException.class,()->list.contains(6));
+        assertThrows(NoSuchElementException.class, () -> list.contains(6));
 
         list.add("qw");
         list.add(null);
@@ -105,6 +124,7 @@ class MyListTest {
         assertEquals("qw", list.get(0));
         assertEquals(null, list.get(1));
         assertEquals(4, list.get(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(-1));
     }
 
     @Test
@@ -114,6 +134,8 @@ class MyListTest {
         assertEquals(4, list.set(2, "test"));
         assertEquals(String.class, list.get(1));
         assertEquals("test", list.get(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(4, null));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(-4, null));
     }
 
     @Test
@@ -130,6 +152,8 @@ class MyListTest {
         assertFalse(list.remove("uu"));
         assertTrue(list.remove(null));
         assertEquals(2, list.size());
+        assertThrows(IndexOutOfBoundsException.class, () -> list.remove(4));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.remove(-4));
     }
 
     @Test
@@ -186,7 +210,7 @@ class MyListTest {
     @Test
     void toArray() {
         list.addAll(Arrays.asList("qw", 8, null, 8, 88));
-        Object[] array=list.toArray();
+        Object[] array = list.toArray();
         assertEquals(5, array.length);
         assertEquals(8, array[1]);
     }
@@ -194,10 +218,10 @@ class MyListTest {
     @Test
     void toArray1() {
         list.addAll(Arrays.asList("qw", 8, null, 8, 88));
-        Object[] arraySmall=new Object[3];
-        Object[] arrayBig=new Object[9];
-        arraySmall=list.toArray(arraySmall);
-        arrayBig=list.toArray(arrayBig);
+        Object[] arraySmall = new Object[3];
+        Object[] arrayBig = new Object[9];
+        arraySmall = list.toArray(arraySmall);
+        arrayBig = list.toArray(arrayBig);
         assertEquals(5, arraySmall.length);
         assertEquals(9, arrayBig.length);
     }
