@@ -16,8 +16,8 @@ public class NIO implements Copieble, Writable, Readable {
     }
 
     @Override
-    public long read(String fileName) throws Exception {
-        return Files.readAllBytes(Paths.get(fileName)).length;
+    public byte[] read(String fileName) throws Exception {
+        return Files.readAllBytes(Paths.get(fileName));
     }
 
     @Override

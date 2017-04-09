@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * Created by Sergii on 07.04.2017.
  */
-public class UnbufferdeIO implements Copieble, Writable, Readable {
+public class UnbufferedIO implements Copieble, Writable, Readable {
 
     @Override
     public void copyTo(String source, String destination) throws Exception {
@@ -23,13 +23,22 @@ public class UnbufferdeIO implements Copieble, Writable, Readable {
     }
 
     @Override
-    public long read(String fileName) throws Exception {
+    public byte[] read(String fileName) throws Exception {
         File fileIn = new File(fileName);
-        try (InputStream fis = new FileInputStream(fileIn)) {
-            int b = -1;
-            while ((b = fis.read()) != -1) ;
+        byte[] bytes;
+        long lenght = fileIn.length();
+        if (lenght > Integer.MAX_VALUE) {
+            throw new RuntimeException("Too large file");
+        } else {
+            bytes = new byte[(int) lenght];
         }
-        return fileIn.length();
+        int i = 0;
+        try (InputStream fis = new FileInputStream(fileIn)) {
+            byte b = -1;
+            while ((b = (byte) fis.read()) != -1)
+                bytes[i++] = b;
+        }
+        return bytes;
     }
 
     @Override
