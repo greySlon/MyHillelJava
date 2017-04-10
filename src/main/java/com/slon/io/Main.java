@@ -1,35 +1,28 @@
 package com.slon.io;
 
-import com.slon.io.Advices.Profiler;
+import com.slon.utils.Advices.ProfilerAdvice;
+import com.slon.utils.pointcuts.MethodNamePoincut;
 import org.aopalliance.aop.Advice;
+import org.springframework.aop.Advisor;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
+
+import static com.slon.utils.Utils.getProxy;
 
 /**
  * Created by Sergii on 07.04.2017.
  */
 public class Main {
-
-    public static <T extends Advice> Object getProxy(Object target, T advice) {
-        ProxyFactory proxyFactory = new ProxyFactory();
-        proxyFactory.setTarget(target);
-        proxyFactory.addAdvice(advice);
-        return proxyFactory.getProxy();
-
-    }
-
     public static void main(String[] args) throws Exception {
-        Profiler profiler = new Profiler();
+        ProfilerAdvice profilerAdvice = new ProfilerAdvice();
+        Advisor profileAdvisor = new DefaultPointcutAdvisor(new MethodNamePoincut("write"), profilerAdvice);
 
-        BufferedIO bufferedIO = (BufferedIO) getProxy(new BufferedIO(), profiler);
-        UnbufferedIO unbufferedIO = (UnbufferedIO) getProxy(new UnbufferedIO(), profiler);
-        NIO nio = ((NIO) getProxy(new NIO(), profiler));
+        BufferedIO bufferedIO = (BufferedIO) getProxy(new BufferedIO(), profileAdvisor);
+        UnbufferedIO unbufferedIO = (UnbufferedIO) getProxy(new UnbufferedIO(), profileAdvisor);
+        NIO nio = ((NIO) getProxy(new NIO(), profileAdvisor));
 
 
         int circle = 10;
@@ -51,7 +44,7 @@ public class Main {
         }
 
         System.out.println("*** Circle count: " + circle + "***");
-        for (Map.Entry<String, Long> stringLongEntry : profiler.getMapMethodLasting().entrySet()) {
+        for (Map.Entry<String, Long> stringLongEntry : profilerAdvice.getMapMethodLasting().entrySet()) {
             System.out.println(MessageFormat.format("{0} {1} Mb/sec",
                     stringLongEntry.getKey(),
                     1000d / stringLongEntry.getValue()));

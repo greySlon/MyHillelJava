@@ -1,4 +1,4 @@
-package com.slon.io.Advices;
+package com.slon.utils.Advices;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -11,7 +11,7 @@ import java.util.TreeMap;
 /**
  * Created by Sergii on 09.04.2017.
  */
-public class Profiler implements MethodInterceptor {
+public class ProfilerAdvice implements MethodInterceptor {
     Map<String, Long> map = new TreeMap<>();
 
     public Map<String, Long> getMapMethodLasting() {
