@@ -1,5 +1,6 @@
 package com.slon.utils.pointcuts;
 
+import org.springframework.aop.ClassFilter;
 import org.springframework.aop.support.StaticMethodMatcherPointcut;
 
 import java.lang.reflect.Method;
@@ -9,6 +10,12 @@ import java.lang.reflect.Method;
  */
 public class MethodNamePoincut extends StaticMethodMatcherPointcut {
     private String methodName;
+    private Class cls;
+
+    public MethodNamePoincut(String methodName, Class cls) {
+        this.methodName = methodName;
+        this.cls = cls;
+    }
 
     public MethodNamePoincut(String methodName) {
         this.methodName = methodName;
@@ -16,6 +23,16 @@ public class MethodNamePoincut extends StaticMethodMatcherPointcut {
 
     public MethodNamePoincut() {
 
+    }
+
+    @Override
+    public ClassFilter getClassFilter() {
+        return new ClassFilter() {
+            @Override
+            public boolean matches(Class<?> aClass) {
+                return cls == null ? true : cls == aClass;
+            }
+        };
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.slon.io;
+package com.slon.io.interfaces;
 
 /**
  * Created by Sergii on 07.04.2017.

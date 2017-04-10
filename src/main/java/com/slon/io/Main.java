@@ -18,7 +18,7 @@ import static com.slon.utils.Utils.getProxy;
 public class Main {
     public static void main(String[] args) throws Exception {
         ProfilerAdvice profilerAdvice = new ProfilerAdvice();
-        Advisor profileAdvisor = new DefaultPointcutAdvisor(new MethodNamePoincut("write"), profilerAdvice);
+        Advisor profileAdvisor = new DefaultPointcutAdvisor(new MethodNamePoincut(), profilerAdvice);
 
         BufferedIO bufferedIO = (BufferedIO) getProxy(new BufferedIO(), profileAdvisor);
         UnbufferedIO unbufferedIO = (UnbufferedIO) getProxy(new UnbufferedIO(), profileAdvisor);
@@ -26,7 +26,7 @@ public class Main {
 
 
         int circle = 10;
-        final int TEST_SIZE = 1024 * 1024;
+        final int TEST_SIZE = 1024 * 1024 * 10;
         byte[] bytes = new byte[TEST_SIZE];
 
 
@@ -47,7 +47,7 @@ public class Main {
         for (Map.Entry<String, Long> stringLongEntry : profilerAdvice.getMapMethodLasting().entrySet()) {
             System.out.println(MessageFormat.format("{0} {1} Mb/sec",
                     stringLongEntry.getKey(),
-                    1000d / stringLongEntry.getValue()));
+                    1000d * TEST_SIZE / (1024 * 1024 * stringLongEntry.getValue())));
         }
     }
 }

@@ -1,10 +1,10 @@
 package com.slon.io;
 
-import java.io.File;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
+import com.slon.io.interfaces.Copieble;
+import com.slon.io.interfaces.Readable;
+import com.slon.io.interfaces.Writable;
+
 import java.nio.file.*;
-import java.util.Random;
 
 /**
  * Created by Sergii on 07.04.2017.

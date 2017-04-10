@@ -1,5 +1,9 @@
 package com.slon.io;
 
+import com.slon.io.interfaces.Copieble;
+import com.slon.io.interfaces.Readable;
+import com.slon.io.interfaces.Writable;
+
 import java.io.*;
 
 /**
