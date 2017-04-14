@@ -35,7 +35,7 @@ public class Json {
     }
 
     public static void main(String[] args) throws Exception {
-        File file = new File("d:/json.txt");
+        File file = new File("d:/student");
         Student student = new Student();
         student.add("rrrr");
         student.add("tttt");
