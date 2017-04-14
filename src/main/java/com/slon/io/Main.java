@@ -1,11 +1,14 @@
 package com.slon.io;
 
 import com.slon.utils.Advices.ProfilerAdvice;
+import com.slon.utils.annotation.Profiling;
 import com.slon.utils.pointcuts.MethodNamePoincut;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Advisor;
+import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -18,7 +21,9 @@ import static com.slon.utils.Utils.getProxy;
 public class Main {
     public static void main(String[] args) throws Exception {
         ProfilerAdvice profilerAdvice = new ProfilerAdvice();
-        Advisor profileAdvisor = new DefaultPointcutAdvisor(new MethodNamePoincut(), profilerAdvice);
+        Pointcut pc = AnnotationMatchingPointcut.forClassAnnotation(Profiling.class);
+//        Pointcut pc = new MethodNamePoincut();
+        Advisor profileAdvisor = new DefaultPointcutAdvisor(pc, profilerAdvice);
 
         BufferedIO bufferedIO = (BufferedIO) getProxy(new BufferedIO(), profileAdvisor);
         UnbufferedIO unbufferedIO = (UnbufferedIO) getProxy(new UnbufferedIO(), profileAdvisor);
@@ -26,7 +31,7 @@ public class Main {
 
 
         int circle = 10;
-        final int TEST_SIZE = 1024 * 1024 * 10;
+        final int TEST_SIZE = 1024 * 1024 * 1;
         byte[] bytes = new byte[TEST_SIZE];
 
 
@@ -47,7 +52,7 @@ public class Main {
         for (Map.Entry<String, Long> stringLongEntry : profilerAdvice.getMapMethodLasting().entrySet()) {
             System.out.println(MessageFormat.format("{0} {1} Mb/sec",
                     stringLongEntry.getKey(),
-                    1000d * TEST_SIZE / (1024 * 1024 * stringLongEntry.getValue())));
+                    1000_000d * TEST_SIZE / (1024 * 1024 * stringLongEntry.getValue())));
         }
     }
 }

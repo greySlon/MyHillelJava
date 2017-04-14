@@ -3,12 +3,14 @@ package com.slon.io;
 import com.slon.io.interfaces.Copieble;
 import com.slon.io.interfaces.Readable;
 import com.slon.io.interfaces.Writable;
+import com.slon.utils.annotation.Profiling;
 
 import java.io.*;
 
 /**
  * Created by Sergii on 07.04.2017.
  */
+@Profiling
 public class BufferedIO implements Copieble, Writable, Readable {
     @Override
     public void copyTo(String source, String destination) throws Exception {
