@@ -9,7 +9,6 @@ import java.util.List;
 public class Student extends Person {
     private String courseName = "Java elementary";
     private List<String> list = new ArrayList<>();
-    public String file;
 
     public List<String> getList() {
         return list;
