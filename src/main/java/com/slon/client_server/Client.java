@@ -25,7 +25,6 @@ public class Client {
             socket.shutdownOutput();
 
             InputStream is = socket.getInputStream();
-
             return Json.jsonToObjectFromStream(cls, is);
         }
     }

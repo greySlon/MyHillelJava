@@ -11,8 +11,13 @@ import java.util.Random;
  */
 public class AnimalGenerator {
     private static Random rand = new Random();
+//    private Animal animal;
 
-    public static Animal create() {
+    public AnimalGenerator() {
+        System.out.println("animal generator created");
+    }
+
+    public Animal create() {
         switch (rand.nextInt(2)) {
             case 0:
                 return new DomesticAnimal();
@@ -20,4 +25,8 @@ public class AnimalGenerator {
                 return new WildAnimal();
         }
     }
+
+//    public Animal getAnimal() {
+//        throw new RuntimeException("look-up method for Spring");
+//    }
 }

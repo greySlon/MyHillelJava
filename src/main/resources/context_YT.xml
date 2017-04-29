@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="logger" class="com.slon.spring_YT.ConsoleEventLoger"></bean>
+    <bean id="fileLogger" class="com.slon.spring_YT.FileEventLogger">
+        <constructor-arg value="D:/spring.txt"></constructor-arg>
+    </bean>
+
+    <bean id="dateFormat" class="java.text.DateFormat"
+          factory-method="getDateTimeInstance"></bean>
+
+    <bean id="event" class="com.slon.spring_YT.Event" scope="prototype">
+        <constructor-arg>
+            <bean class="java.util.Date"></bean>
+        </constructor-arg>
+        <constructor-arg ref="dateFormat"></constructor-arg>
+    </bean>
+
+    <bean id="client" class="com.slon.spring_YT.Client">
+        <constructor-arg value="1"></constructor-arg>
+        <constructor-arg value="John"></constructor-arg>
+    </bean>
+
+
+    <bean id="app" class="com.slon.spring_YT.App">
+        <lookup-method name="createEvent" bean="event"></lookup-method>
+        <constructor-arg ref="client"></constructor-arg>
+        <constructor-arg ref="fileLogger"></constructor-arg>
+    </bean>
+
+</beans>

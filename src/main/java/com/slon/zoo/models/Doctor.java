@@ -1,28 +1,38 @@
+
 package com.slon.zoo.models;
 
-import com.slon.zoo.interfaces.Listener;
-import com.slon.zoo.events.DiseaseEvent;
-import com.slon.zoo.events.WannaEatEvent;
+import com.slon.zoo.springEvents.DiseaseEvent;
+import com.slon.zoo.springEvents.DiseaseEventListener;
+import com.slon.zoo.springEvents.WannaEatEvent;
+import com.slon.zoo.springEvents.WannaEatEventListener;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 
 /**
  * Created by Sergii on 27.03.2017.
  */
-public class Doctor {
-    Listener<WannaEatEvent> eatEventListener = (Object sender, WannaEatEvent eventArg) -> System.out.println(
-            "Doctor receive message from "
-                    + sender.getClass().toString().replaceAll(".+\\.", "")
-                    + ": " + eventArg.toString());
-    Listener<DiseaseEvent> diseaseEventListener = (Object sender, DiseaseEvent eventArg) -> System.out.println(
-            "Doctor receive message from "
-                    + sender.getClass().toString().replaceAll(".+\\.", "")
-                    + ": " + eventArg.toString()
-    );
+public class Doctor implements ApplicationListener<ApplicationEvent> {
+    private String name = this.getClass().getCanonicalName().replaceAll("(\\S+\\.)*", "");
 
-    public Listener<WannaEatEvent> getEatEventListener() {
-        return eatEventListener;
+
+    public Doctor() {
+        System.out.println("doctor created");
     }
 
-    public Listener<DiseaseEvent> getDiseaseEventListener() {
-        return diseaseEventListener;
+    @Override
+    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+        if (applicationEvent.getClass()== WannaEatEvent.class)
+            onWannaEatEvent(((WannaEatEvent) applicationEvent));
+        else if (applicationEvent instanceof DiseaseEvent)
+            onDiseaseEvent(((DiseaseEvent) applicationEvent));
+    }
+
+    private void onWannaEatEvent(WannaEatEvent wannaEatEvent) {
+        System.out.println(name + ":* " + wannaEatEvent.toString());
+    }
+
+
+    private void onDiseaseEvent(DiseaseEvent diseaseEvent) {
+        System.out.println(name + ":* " + diseaseEvent.toString());
     }
 }

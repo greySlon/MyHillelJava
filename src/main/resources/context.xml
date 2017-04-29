@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <bean id="animalGenerator" class="com.slon.zoo.utils.AnimalGenerator"></bean>
+    <bean id="randomAnimal" factory-bean="animalGenerator" factory-method="create" scope="prototype"></bean>
+
+    <bean id="doctor" class="com.slon.zoo.models.Doctor"></bean>
+
+    <bean id="foodManager" class="com.slon.zoo.models.FoodManager" scope="prototype">
+        <property name="map">
+            <map key-type="java.lang.Class" value-type="com.slon.zoo.springEvents.WannaEatEventListener">
+                <entry key="com.slon.zoo.springEvents.WannaEatEventListener">
+                    <!--<bean class="com.slon.zoo.springEvents.WannaEatEventListener"></bean>-->
+                    <ref bean="wannaEatEventListener"></ref>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="foodManager2" class="com.slon.zoo.models.FoodManager" scope="prototype">
+        <property name="map">
+            <map key-type="java.lang.Class" value-type="com.slon.zoo.springEvents.WannaEatEventListener">
+                <entry key="com.slon.zoo.springEvents.WannaEatEventListener">
+                    <!--<bean class="com.slon.zoo.springEvents.WannaEatEventListener"></bean>-->
+                    <ref bean="wannaEatEventListener2"></ref>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="wannaEatEventListener" class="com.slon.zoo.springEvents.WannaEatEventListener"></bean>
+    <bean id="wannaEatEventListener2" class="com.slon.zoo.springEvents.WannaEatEventListener"></bean>
+
+    <bean id="groomer" class="com.slon.zoo.models.Groomer">
+        <property name="map">
+            <map key-type="java.lang.Class" value-type="org.springframework.context.ApplicationListener">
+                <entry key="com.slon.zoo.springEvents.FurCareEventListener">
+                    <bean class="com.slon.zoo.springEvents.FurCareEventListener" scope="singleton"></bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <!--<bean id="diseaseEventListener" class="com.slon.zoo.springEvents.DiseaseEventListener" scope="singleton"></bean>-->
+    <!--<bean id="wannaEatEventListener" class="com.slon.zoo.springEvents.WannaEatEventListener" scope="prototype"></bean>-->
+    <!--<bean id="furCareEventListener" class="com.slon.zoo.springEvents.FurCareEventListener" scope="singleton"></bean>-->
+
+    <bean id="supervisor" class="com.slon.zoo.models.Supervisor">
+        <property name="map">
+            <map key-type="java.lang.Class" value-type="com.slon.zoo.springEvents.FurCareEventListener">
+                <entry key="com.slon.zoo.springEvents.FurCareEventListener">
+                    <bean class="com.slon.zoo.springEvents.FurCareEventListener"></bean>
+                </entry>
+                <entry key="com.slon.zoo.springEvents.WannaEatEventListener">
+                    <bean class="com.slon.zoo.springEvents.WannaEatEventListener"></bean>
+                </entry>
+                <entry key="com.slon.zoo.springEvents.DiseaseEventListener">
+                    <bean class="com.slon.zoo.springEvents.DiseaseEventListener"></bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="stuff" class="com.slon.zoo.utils.Stuff">
+        <lookup-method name="getAnimal" bean="randomAnimal"></lookup-method>
+        <property name="doctor">
+            <ref bean="doctor"></ref>
+        </property>
+        <property name="groomer">
+            <ref bean="groomer"></ref>
+        </property>
+        <property name="supervisor">
+            <ref bean="supervisor"></ref>
+        </property>
+        <property name="foodManager">
+            <ref bean="foodManager"></ref>
+        </property>
+        <property name="foodManager2">
+        <ref bean="foodManager2"></ref>
+        </property>
+    </bean>
+
+</beans>

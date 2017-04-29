@@ -42,6 +42,7 @@ public class Server {
     public void processRequest(InputStream is, OutputStream os) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String fileName = "d:/" + reader.readLine().trim();
+
         System.out.println(fileName);
         Files.copy(Paths.get(fileName), os);
     }

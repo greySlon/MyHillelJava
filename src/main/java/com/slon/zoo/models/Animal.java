@@ -1,47 +1,35 @@
 package com.slon.zoo.models;
 
-import com.slon.zoo.implement.NotifierImpl;
-import com.slon.zoo.interfaces.Listener;
-import com.slon.zoo.interfaces.Notifier;
-import com.slon.zoo.events.DiseaseEvent;
-import com.slon.zoo.events.WannaEatEvent;
+import com.slon.zoo.springEvents.DiseaseEvent;
+import com.slon.zoo.springEvents.WannaEatEvent;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * Created by Sergii on 27.03.2017.
  */
-public abstract class Animal {
+public abstract class Animal implements ApplicationContextAware {
     static protected int counter;
 
     protected int id;
-    protected Notifier<DiseaseEvent> diseaseNotifier = new NotifierImpl<DiseaseEvent>();
-    protected Notifier<WannaEatEvent> wannaEatNotifier = new NotifierImpl<WannaEatEvent>();
+    protected ApplicationContext ctx;
 
     protected Animal() {
         this.id = ++counter;
     }
 
-    public void subscribeOnDiseaseEvent(Listener<DiseaseEvent> listener) {
-        diseaseNotifier.subscribe(listener);
-    }
-
-    public void unsubscribeFromDiseaseEvent(Listener<DiseaseEvent> listener) {
-        diseaseNotifier.unsubscribe(listener);
-    }
-
-    public void subscribeOnWannaEatEvent(Listener<WannaEatEvent> listener) {
-        wannaEatNotifier.subscribe(listener);
-    }
-
-    public void unsubscribeFromWannaEatEvent(Listener<WannaEatEvent> listener) {
-        wannaEatNotifier.unsubscribe(listener);
-    }
-
-    protected void feelIll() {
-        diseaseNotifier.raiseEvent(this, new DiseaseEvent(id, String.format("Animal feels ill", id)));
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.ctx = applicationContext;
     }
 
     protected void wannaEat() {
-        wannaEatNotifier.raiseEvent(this, new WannaEatEvent(id, String.format("Animal want to eat", id)));
+        ctx.publishEvent(new WannaEatEvent(this, String.format("Animal want to eat", id)));
+    }
+
+    public void feelIll() {
+        ctx.publishEvent(new DiseaseEvent(this, String.format("Animal feels ill", id)));
     }
 
     public abstract void eventGenerator();

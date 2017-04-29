@@ -4,7 +4,6 @@ package com.slon;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 
 import java.util.Arrays;
@@ -18,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Created by Sergii on 28.02.2017.
  */
+
 class MyListTest {
 
     MyList list;
@@ -131,9 +131,9 @@ class MyListTest {
     void set() {
         list.addAll(Arrays.asList("qw", null, 4, 8));
         assertEquals(null, list.set(1, String.class));
-        assertEquals(4, list.set(2, "test"));
+        assertEquals(4, list.set(2, "com/slon/serialization/test"));
         assertEquals(String.class, list.get(1));
-        assertEquals("test", list.get(2));
+        assertEquals("com/slon/serialization/test", list.get(2));
         assertThrows(IndexOutOfBoundsException.class, () -> list.set(4, null));
         assertThrows(IndexOutOfBoundsException.class, () -> list.set(-4, null));
     }

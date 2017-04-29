@@ -11,18 +11,23 @@ import java.util.Random;
  * Created by Sergii on 27.03.2017.
  */
 public class DomesticAnimal extends Animal {
-    private Notifier<FurCareEvent> furCareNotifier = new NotifierImpl<>();
-
-    public void subscribeOnFurCareEvent(Listener<FurCareEvent> listener) {
-        furCareNotifier.subscribe(listener);
+    public DomesticAnimal() {
+        System.out.println("domestic animal created");
     }
 
-    public void unsubscribeFromFurCareEvent(Listener<FurCareEvent> listener) {
-        furCareNotifier.unsubscribe(listener);
-    }
+//    private Notifier<FurCareEvent> furCareNotifier = new NotifierImpl<>();
+//
+//    public void subscribeOnFurCareEvent(Listener<FurCareEvent> listener) {
+//        furCareNotifier.subscribe(listener);
+//    }
+//
+//    public void unsubscribeFromFurCareEvent(Listener<FurCareEvent> listener) {
+//        furCareNotifier.unsubscribe(listener);
+//    }
 
     protected void needGroom() {
-        furCareNotifier.raiseEvent(this, new FurCareEvent(id, String.format("Animal want to be groomed", id)));
+        ctx.publishEvent(new com.slon.zoo.springEvents.FurCareEvent(this, String.format("Animal want to be groomed", id)));
+//        furCareNotifier.raiseEvent(this, new FurCareEvent(id, String.format("Animal want to be groomed", id)));
     }
 
     @Override
